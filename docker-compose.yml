@@ -1,0 +1,14 @@
+version: "2.2"
+
+services:
+  rstudio-dailies:
+    image: rstudio-dailies:latest
+    hostname: rstudio-dailies
+    privileged: true 
+    volumes:
+      - ./etc/rserver.conf:/etc/rstudio/rserver.conf
+      - ./etc/launcher.conf:/etc/rstudio/launcher.conf
+    ports:
+      - "8787:8787"
+    environment:
+      RSW_LICENSE: ${RSW_LICENSE}
