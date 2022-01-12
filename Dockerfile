@@ -8,6 +8,8 @@ ENV DEBIAN_FRONTEND=noninteractive
 ENV RSW_LICENSE ""
 ENV R_VERSION_LIST="3.2.5 3.4.4 3.6.3 4.0.5 4.1.2"
 
+RUN groupadd -g 2000 mm && useradd -m -u 2000 mm -g mm && echo "test123\ntest123" | passwd
+
 RUN apt-get update && apt-get install -y gdebi wget vim
 
 
