@@ -39,9 +39,11 @@ r["CRAN"] <- paste0(pm,"/cran/",binaryflag,"/",snapshot,"/")
 
 nr=length(r)
 r<-c(r[nr],r[1:nr-1])
+
+rverstring=paste0(R.version$major,".",R.version$minor)
  
 system("mkdir -p /etc/rstudio/repos")
-filename=paste0("/etc/rstudio/repos/repos-",R.version$major,".",R.version$minor,".conf")
+filename=paste0("/etc/rstudio/repos/repos-",rverstring,".conf")
 sink(filename)
 for (i in names(r)) {cat(noquote(paste0(i,"=",r[i],"\n"))) }
 sink()
@@ -58,14 +60,20 @@ cat("\n")
 sink()
 
 
-sink(paste0("/opt/R/",R.Version()$major,".",R.Version()$minor,"/lib/R/etc/Rprofile.site"))
-cat('.env = new.env()\n')
+sink(paste0("/opt/R/",rverstring,"/lib/R/etc/Rprofile.site"),append=TRUE)
+if ( rverstring < "4.1.0" ) {
+  cat('.env = new.env()\n')
+}
 cat('local({\n')
 cat('r<-options()$repos\n')
 for (line in names(r)) {
    cat(paste0('r["',line,'"]="',r[line],'"\n'))
 }
 cat('options(repos=r)\n') 
+if ( rverstring < "4.1.0" ) {
 cat('}, envir = .env)\n')
 cat('attach(.env)\n')
+} else {
+cat('})\n')
+}
 sink()

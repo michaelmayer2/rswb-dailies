@@ -49,6 +49,6 @@ install.packages(package,repos=repo,libdir)
 }
 }
 
-sink(paste0("/opt/R/",currver,"/lib/R/etc/Rprofile.site"))
-cat(paste0('.libPaths("',libdir,'")'))
+sink(paste0("/opt/R/",currver,"/lib/R/etc/Rprofile.site"), append=TRUE)
+cat(paste0('.libPaths(c(.libPaths(),"',libdir,'"))'))
 sink() 
