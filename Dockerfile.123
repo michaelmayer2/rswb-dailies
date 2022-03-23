@@ -19,11 +19,14 @@ RUN for R_VERSION in $R_VERSION_LIST; do wget https://cdn.rstudio.com/r/ubuntu-1
 COPY rstudio-workbench-1.2.3--amd64-relwithdebinfo.deb /  
 #RUN wget https://s3.amazonaws.com/rstudio-ide-build/server/bionic/amd64/rstudio-workbench-2022.02.0-preview-392.pro1-amd64.deb && gdebi -n rstudio-workbench-2022.02.0-preview-392.pro1-amd64.deb && rm -f rstudio-workbench-2022.02.0-preview-392.pro1-amd64.deb
 RUN gdebi -n /rstudio-workbench-1.2.3--amd64-relwithdebinfo.deb
+RUN rm /rstudio-workbench-1.2.3--amd64-relwithdebinfo.deb
 
 COPY etc/* /etc/rstudio/
 COPY start-rstudio.sh /usr/local/bin
 COPY create.R /tmp
 COPY run.R /tmp
+
+RUN mkdir -p /projects/{a,b,c} && touch projects/a/file.txt && chown mm /projects/b && touch /projects/b/mm-writable.txt  
 
 RUN for R_VERSION in $R_VERSION_LIST; do /opt/R/$R_VERSION/bin/Rscript /tmp/create.R; done
 
