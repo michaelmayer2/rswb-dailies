@@ -2,7 +2,7 @@ version: "2.2"
 
 services:
   rswb-dailies:
-    image: rswb-dailies:latest
+    image: rswb-directory-limit:latest 
     hostname: rswb-dailies
     privileged: true 
     ports:

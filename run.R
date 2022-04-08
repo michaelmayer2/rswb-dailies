@@ -1,6 +1,6 @@
 currver <- paste0(R.Version()$major,".",R.Version()$minor)
 libdir <- paste0("/data/rver/",currver)
-
+pmurl <- "http://192.168.0.100:4242"
 if(dir.exists(libdir)) {unlink(libdir,recursive=TRUE)}
 dir.create(libdir,recursive=TRUE)
 .libPaths(libdir)
@@ -15,21 +15,27 @@ pnames=c("DBI", "R6", "RJDBC", "RODBC", "RSQLite", "Rcpp", "base64enc", "checkma
 
 
 currver <- paste0(R.Version()$major,".",R.Version()$minor)
+paste("version",currver)
+
 releasedate <- paste0(R.version$year,"-",R.version$month,"-",R.version$day)
+
+paste("release", releasedate)
  
-repo=paste0("https://packagemanager.rstudio.com/cran/__linux__/bionic/",releasedate)
+repo=paste0(pmurl,"/cran/__linux__/bionic/",releasedate)
+
+paste("repo", repo)
 
 # Attempt to install packages from snapshot - if snapshot does not exist, increase day by 1 and try again
 getreleasedate <- function(repodate){
   
-  repo=paste0("https://packagemanager.rstudio.com/cran/__linux__/bionic/",repodate)
+  repo=paste0(pmurl,"/cran/__linux__/bionic/",repodate)
 
   URLfound=FALSE
   while(!URLfound) {
    if (!RCurl::url.exists(paste0(repo,"/src/contrib/PACKAGES"),useragent="curl/7.39.0 Rcurl/1.95.4.5")) {
 	repodate<-as.Date(repodate)+1
-        cat(repodate)
-        repo=paste0("https://packagemanager.rstudio.com/cran/__linux__/bionic/",repodate)
+        paste(repodate)
+        repo=paste0(pmurl,"/cran/__linux__/bionic/",repodate)
    } else {
    URLfound=TRUE
    }
@@ -39,7 +45,9 @@ getreleasedate <- function(repodate){
 
 releasedate <- getreleasedate(releasedate)
 
-repo=paste0("https://packagemanager.rstudio.com/cran/__linux__/bionic/",releasedate)
+repo=paste0(pmurl,"/cran/__linux__/bionic/",releasedate)
+
+paste("release repo",repo)
 
 avpack<-available.packages(paste0(repo,"/src/contrib"))
 

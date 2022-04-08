@@ -26,7 +26,7 @@ library(BiocManager, lib.loc=Sys.getenv("R_LIBS_USER"),quietly=TRUE,verbose=FALS
 r <- getOption("repos")
 
 # Package Manager URL
-pm <- "https://packagemanager.rstudio.com"
+pm <- "http://192.168.0.100:4242"
 
 # Version of BioConductor as given by BiocManager (can also be manually set)
 biocvers <- BiocManager::version()
@@ -70,6 +70,8 @@ for (line in names(r)) {
    cat(paste0('r["',line,'"]="',r[line],'"\n'))
 }
 cat('options(repos=r)\n') 
+libdir <- paste0("/data/rver/",rverstring)
+cat(paste0('.libPaths(c(.libPaths(),"',libdir,'"))\n'))
 if ( rverstring < "4.1.0" ) {
 cat('}, envir = .env)\n')
 cat('attach(.env)\n')
